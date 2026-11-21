@@ -1,0 +1,10 @@
+{
+  "name": "JAO POTO",
+  "short_name": "JAO POTO",
+  "description": "Votre espace intelligent pour vos projets et votre activité.",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#f5f6f8",
+  "theme_color": "#10213b",
+  "icons": []
+}
