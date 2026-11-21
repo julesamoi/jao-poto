@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#10213b">
+  <meta name="description" content="JAO POTO, votre espace intelligent pour vos projets, votre activité et votre créativité.">
+  <title>JAO POTO – Votre assistant</title>
+  <link rel="manifest" href="manifest.webmanifest">
+  <style>
+    :root{--navy:#10213b;--gold:#d5a83d;--paper:#f5f6f8;--ink:#172033;--muted:#697386}
+    *{box-sizing:border-box}body{margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;background:var(--paper);color:var(--ink)}
+    header{background:linear-gradient(135deg,#10213b,#203e65);color:white;padding:28px 20px 36px;border-radius:0 0 28px 28px}
+    .wrap{max-width:980px;margin:auto}.brand{display:flex;align-items:center;gap:12px}.logo{width:48px;height:48px;border-radius:15px;background:var(--gold);display:grid;place-items:center;color:var(--navy);font-weight:900;font-size:20px}
+    h1{font-size:clamp(28px,5vw,42px);margin:24px 0 8px}header p{color:#e3e9f2;margin:0;line-height:1.5}.tag{color:#f4cf75;font-weight:700;letter-spacing:.08em;font-size:12px}
+    main{padding:24px 20px 48px}.section-title{margin:8px 0 14px;font-size:19px}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}
+    .card{background:white;border:1px solid #e7eaf0;border-radius:18px;padding:18px;box-shadow:0 5px 18px #10213b0a}
+    .ico{font-size:25px}.card h3{margin:10px 0 6px;font-size:17px}.card p{color:var(--muted);font-size:14px;line-height:1.5;margin:0 0 14px}
+    button{border:0;border-radius:12px;padding:11px 14px;background:var(--navy);color:white;font-weight:700;cursor:pointer}button:hover{opacity:.9}
+    .chat{margin-top:22px}.chatbox{display:flex;gap:8px;margin-top:12px}.chatbox input{min-width:0;flex:1;border:1px solid #dce1e9;border-radius:12px;padding:13px;font:inherit}
+    #reply{margin-top:12px;background:#eef2f7;border-radius:12px;padding:13px;color:#334155;min-height:46px;font-size:14px;line-height:1.5}
+    footer{text-align:center;color:var(--muted);font-size:12px;padding:0 20px 28px}
+  </style>
+</head>
+<body>
+<header><div class="wrap">
+  <div class="brand"><div class="logo">JAO</div><div><strong>JAO POTO</strong><div class="tag">VOTRE PARTENAIRE DE PROJETS</div></div></div>
+  <h1>Bonjour, bienvenue chez JAO POTO.</h1>
+  <p>Un espace pour organiser vos idées, développer vos activités et donner vie à vos projets.</p>
+</div></header>
+<main class="wrap">
+  <h2 class="section-title">Votre espace de travail</h2>
+  <div class="grid">
+    <article class="card"><div class="ico">🤝</div><h3>Assistant JAO</h3><p>Préparez vos idées, courriers, plans d’action et tâches du quotidien.</p><button data-topic="Assistant JAO">Ouvrir</button></article>
+    <article class="card"><div class="ico">🏡</div><h3>JAO Immobilier</h3><p>Présentez des biens, préparez des annonces et suivez vos projets immobiliers.</p><button data-topic="JAO Immobilier">Ouvrir</button></article>
+    <article class="card"><div class="ico">💼</div><h3>JAO Business</h3><p>Structurez vos idées d’entreprise, offres commerciales et plans d’affaires.</p><button data-topic="JAO Business">Ouvrir</button></article>
+    <article class="card"><div class="ico">📣</div><h3>JAO Marketing</h3><p>Préparez vos publications, campagnes et stratégies de communication.</p><button data-topic="JAO Marketing">Ouvrir</button></article>
+    <article class="card"><div class="ico">🎨</div><h3>JAO Création</h3><p>Imaginez vos visuels, slogans, flyers et concepts créatifs.</p><button data-topic="JAO Création">Ouvrir</button></article>
+    <article class="card"><div class="ico">📚</div><h3>JAO Histoire & Écriture</h3><p>Travaillez vos récits, recherches historiques et supports pédagogiques.</p><button data-topic="JAO Histoire & Écriture">Ouvrir</button></article>
+  </div>
+  <section class="card chat">
+    <h2 class="section-title">Parler à JAO POTO</h2>
+    <p>Décrivez ce que vous souhaitez faire. Cette première version vous aide à préparer votre demande.</p>
+    <div class="chatbox"><input id="message" type="text" placeholder="Ex. Aide-moi à préparer un projet immobilier…"><button id="send">Envoyer</button></div>
+    <div id="reply" aria-live="polite">Je suis prêt. Écrivez votre demande pour commencer.</div>
+  </section>
+</main>
+<footer>© 2026 JAO POTO · Une initiative JAO – Côte d’Ivoire</footer>
+<script>
+  const reply=document.getElementById('reply'), input=document.getElementById('message');
+  function respond(topic){reply.textContent='Espace « '+topic+' » sélectionné. Décrivez votre besoin dans la zone de message : nous pourrons ensuite connecter cet espace à un assistant IA dédié.';input.focus();}
+  document.querySelectorAll('[data-topic]').forEach(b=>b.addEventListener('click',()=>respond(b.dataset.topic)));
+  document.getElementById('send').addEventListener('click',()=>{const v=input.value.trim();if(!v){reply.textContent='Écrivez d’abord votre demande.';return;}reply.textContent='Votre demande est prête : « '+v+' ». Cette version de démonstration ne transmet pas encore les messages à un service IA. La prochaine étape sera de connecter le moteur intelligent JAO POTO.';input.value='';});
+  input.addEventListener('keydown',e=>{if(e.key==='Enter')document.getElementById('send').click()});
+  if('serviceWorker' in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}));}
+</script>
+</body>
+</html>
