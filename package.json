@@ -1,0 +1,12 @@
+{
+  "name": "jao-poto-api",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Backend sécurisé de l'assistant IA JAO POTO",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
