@@ -40,7 +40,7 @@
   </div>
   <section class="card chat">
     <h2 class="section-title">Parler à JAO POTO</h2>
-    <p>Décrivez ce que vous souhaitez faire. Cette première version vous aide à préparer votre demande.</p>
+    <p>Posez vos questions à votre assistant intelligent JAO POTO. Les réponses seront générées par IA.</p>
     <div class="chatbox"><input id="message" type="text" placeholder="Ex. Aide-moi à préparer un projet immobilier…"><button id="send">Envoyer</button></div>
     <div id="reply" aria-live="polite">Je suis prêt. Écrivez votre demande pour commencer.</div>
   </section>
@@ -48,10 +48,28 @@
 <footer>© 2026 JAO POTO · Une initiative JAO – Côte d’Ivoire</footer>
 <script>
   const reply=document.getElementById('reply'), input=document.getElementById('message');
-  function respond(topic){reply.textContent='Espace « '+topic+' » sélectionné. Décrivez votre besoin dans la zone de message : nous pourrons ensuite connecter cet espace à un assistant IA dédié.';input.focus();}
+  const history=[];
+  const API_URL='https://jao-poto-api.onrender.com/api/chat';
+  function respond(topic){input.value='Aide-moi dans mon espace '+topic+' : ';input.focus();}
   document.querySelectorAll('[data-topic]').forEach(b=>b.addEventListener('click',()=>respond(b.dataset.topic)));
-  document.getElementById('send').addEventListener('click',()=>{const v=input.value.trim();if(!v){reply.textContent='Écrivez d’abord votre demande.';return;}reply.textContent='Votre demande est prête : « '+v+' ». Cette version de démonstration ne transmet pas encore les messages à un service IA. La prochaine étape sera de connecter le moteur intelligent JAO POTO.';input.value='';});
-  input.addEventListener('keydown',e=>{if(e.key==='Enter')document.getElementById('send').click()});
+  async function sendMessage(){
+    const message=input.value.trim();
+    if(!message){reply.textContent='Écris d’abord ton message.';return;}
+    const button=document.getElementById('send');
+    button.disabled=true;button.textContent='Réflexion…';input.disabled=true;
+    reply.textContent='JAO POTO prépare sa réponse…';
+    try{
+      const response=await fetch(API_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({message,history})});
+      const data=await response.json();
+      if(!response.ok) throw new Error(data.error||'Le service est momentanément indisponible.');
+      reply.textContent=data.reply;
+      history.push({role:'user',content:message},{role:'assistant',content:data.reply});
+      input.value='';
+    }catch(error){reply.textContent='Connexion à JAO POTO impossible : '+error.message;}
+    finally{button.disabled=false;button.textContent='Envoyer';input.disabled=false;input.focus();}
+  }
+  document.getElementById('send').addEventListener('click',sendMessage);
+  input.addEventListener('keydown',e=>{if(e.key==='Enter')sendMessage();});
   if('serviceWorker' in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}));}
 </script>
 </body>
